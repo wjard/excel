@@ -1,0 +1,123 @@
+<!DOCTYPE html lang="pt-BR">
+<meta charset="UTF-8">
+<head>
+ <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+ <style>
+  
+
+
+input[type=text], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type=submit] {
+  width: 100%;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type=submit]:hover {
+  background-color: #45a049;
+}
+
+div {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+
+  h1 {
+    text-align: center;
+    text-transform: uppercase;
+    color: #4CAF50;
+  }
+  
+  h5 {
+    text-align: center;
+    text-transform: uppercase;
+    color: #e01c1c;
+  }
+
+  span {
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 26px;
+    font-weight: bold;
+    color: #1f0fb4;
+  }
+
+  p {
+    text-indent: 50px;
+    text-align: justify;
+    letter-spacing: 3px;
+  }
+  
+  a {
+    text-decoration: none;
+    color: #008CBA;
+  }
+
+  #footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    font-weight: bold;
+    text-align: center;
+}
+
+  </style>
+</head>
+<script>
+  function getData() {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == XMLHttpRequest.DONE) { // XMLHttpRequest.DONE == 4
+           if (xmlhttp.status == 200) {
+               document.getElementById("print").innerHTML = xmlhttp.responseText;
+           }
+           else if (xmlhttp.status == 400) {
+            document.getElementById("print").innerHTML = 'There was an error 400';
+           }
+           else {
+            document.getElementById("print").innerHTML = 'something else other than 200 was returned';
+           }
+        }
+    };
+    
+    var value = document.getElementById("value").value;
+    xmlhttp.open("GET", "/extenso/?value="+value+"&culture=pt-BR", true);
+    xmlhttp.send();
+}
+ </script>
+<body>
+  <div>
+   <h1>Valores por extenso [Humanizer]- v0.1</h1>
+   <h5>Utilizar valores no padrão brasileiro com DUAS casas decimais. Ex: 145,78</h5>
+   <h5>Mais que duas casas deciamais, o valor será arrendodado
+    [Math.Round(valor, 2)]</h5>
+
+    <label>Informe um valor:</label>
+   <input id="value" type="text" value="359,73" onsubmit="getData">
+   <input id="converter" type="submit" value="Converter" onclick="getData()">
+   <p/>
+    <span id="print"></span>
+   </div>
+
+   <div id="footer">
+    <a target="_blank" href="https://github.com/Humanizr/Humanizer">LIB
+     UTILIZADA
+     EM CONJUNTO - https://github.com/Humanizr/Humanizer</a>
+   </div>
+ </body>
+</html>
