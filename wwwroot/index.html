@@ -3,9 +3,6 @@
 <head>
  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
  <style>
-  
-
-
 input[type=text], select {
   width: 100%;
   padding: 12px 20px;
@@ -76,9 +73,45 @@ div {
     text-align: center;
 }
 
-  </style>
+  </style>  
 </head>
-<script>
+<body>
+  <div>
+   <h1>Valores por extenso [Humanizer]- v0.1</h1>
+   <h5>Utilizar valores no padrão brasileiro com DUAS casas decimais. Ex: 145,78</h5>
+   <h5>Mais que duas casas deciamais, o valor será arrendodado
+    [Math.Round(valor, 2)]</h5>
+
+    <label>Informe um valor:</label>
+   <input id="value" type="text" value="100,00">
+   <input id="converter" type="submit" value="Converter" onclick="getData()">
+   <p/>
+    <span id="print"></span>
+   </div>
+
+   <div id="footer">   
+     
+     <a target="_blank" href="https://github.com/wjard/humanize-currency">
+     REPOSITÓRIO DO PROJETO NO GITHUB</a>
+     </p>
+     <a target="_blank" style="font-size: x-small;" href="https://github.com/Humanizr/Humanizer">LIB
+     UTILIZADA
+     EM CONJUNTO - https://github.com/Humanizr/Humanizer</a>
+   </div>
+ </body>
+ <script>
+  var input = document.getElementById("value");
+  input.addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      document.getElementById("converter").click();
+    }
+  });
+  function selectText() {
+    const input = document.getElementById("value");
+    input.focus();
+    input.select();
+  }
   function getData() {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
@@ -90,9 +123,10 @@ div {
             document.getElementById("print").innerHTML = 'There was an error 400';
            }
            else {
-            document.getElementById("print").innerHTML = 'something else other than 200 was returned';
+            document.getElementById("print").innerHTML = xmlhttp.responseText.substring(0, 100);
            }
         }
+        selectText();
     };
     
     var value = document.getElementById("value").value;
@@ -100,24 +134,6 @@ div {
     xmlhttp.send();
 }
  </script>
-<body>
-  <div>
-   <h1>Valores por extenso [Humanizer]- v0.1</h1>
-   <h5>Utilizar valores no padrão brasileiro com DUAS casas decimais. Ex: 145,78</h5>
-   <h5>Mais que duas casas deciamais, o valor será arrendodado
-    [Math.Round(valor, 2)]</h5>
-
-    <label>Informe um valor:</label>
-   <input id="value" type="text" value="359,73" onsubmit="getData">
-   <input id="converter" type="submit" value="Converter" onclick="getData()">
-   <p/>
-    <span id="print"></span>
-   </div>
-
-   <div id="footer">
-    <a target="_blank" href="https://github.com/Humanizr/Humanizer">LIB
-     UTILIZADA
-     EM CONJUNTO - https://github.com/Humanizr/Humanizer</a>
-   </div>
- </body>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9406899167513867"
+     crossorigin="anonymous"></script>     
 </html>

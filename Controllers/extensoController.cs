@@ -17,30 +17,69 @@ public class extensoController : ControllerBase
  [HttpGet("{value}/{culture}")]
  public IActionResult GetConverter(string value, string culture)
  {
-  culture = string.IsNullOrEmpty(culture) || string.IsNullOrWhiteSpace(culture) ? "pt-BR" : culture;
-  if (!string.IsNullOrEmpty(value) && !string.IsNullOrWhiteSpace(value))
+  try
   {
-   var ci = new CultureInfo(culture);
-   if (double.TryParse(value, NumberStyles.Any, ci, out double conv))
+   culture = string.IsNullOrEmpty(culture) || string.IsNullOrWhiteSpace(culture) ? "pt-BR" : culture;
+   if (!string.IsNullOrEmpty(value) && !string.IsNullOrWhiteSpace(value))
    {
-    return Ok(new { value,        
-        result = $"{Utils.NumberToWords(conv, ci)}" });
+    value = value.Replace(" ", "");
+    var ci = new CultureInfo(culture);
+    if (double.TryParse(value, NumberStyles.Any, ci, out double conv))
+    {
+     return Ok(new
+     {
+      value,
+      result = $"{Utils.NumberToWords(conv, ci)}"
+     });
+    }
    }
+   return BadRequest(new
+   {
+    value,
+    result = "Possível valor inválido"
+   });
   }
-  return NoContent();
+  catch (OverflowException)
+  {
+   return BadRequest(new
+   {
+    value,
+    result = "Valor maior que o permitido (int64 inválido)"
+   });
+  }
+  catch (Exception ex)
+  {
+   return BadRequest(new
+   {
+    value,
+    result = ex.Message
+   });
+  }
  }
 
  public string Get([FromQuery] string value, [FromQuery] string culture)
  {
-  culture = string.IsNullOrEmpty(culture) || string.IsNullOrWhiteSpace(culture) ? "pt-BR" : culture;
-  if (!string.IsNullOrEmpty(value) && !string.IsNullOrWhiteSpace(value))
+  try
   {
-   var ci = new CultureInfo(culture);
-   if (double.TryParse(value, NumberStyles.Any, ci, out double conv))
+   culture = string.IsNullOrEmpty(culture) || string.IsNullOrWhiteSpace(culture) ? "pt-BR" : culture;
+   if (!string.IsNullOrEmpty(value) && !string.IsNullOrWhiteSpace(value))
    {
-    return $"{Utils.NumberToWords(conv, ci)}";
+    value = value.Replace(" ", "");
+    var ci = new CultureInfo(culture);
+    if (double.TryParse(value, NumberStyles.Any, ci, out double conv))
+    {
+     return $"{Utils.NumberToWords(conv, ci)}";
+    }
    }
+   return "Possível valor inválido";
   }
-  return string.Empty;
+  catch (OverflowException)
+  {
+   return "Valor maior que o permitido (int64 inválido)";
+  }
+  catch (Exception ex)
+  {
+   return ex.Message;
+  }
  }
 }
